@@ -71,3 +71,17 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+// 16 KB page-size fix: force the mobile_scanner 6.0.11 dependency set so all
+// 64-bit native libs are 16 KB aligned. Barcode 17.3.0 alone is NOT enough:
+// it fixes libbarhopper_v3.so but leaves libimage_processing_util_jni.so at
+// 4 KB; the CameraX 1.5.0 part of the set is required. mobile_scanner stays 5.2.3.
+configurations.all {
+    resolutionStrategy {
+        force("com.google.mlkit:barcode-scanning:17.3.0")
+        force("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
+        force("androidx.camera:camera-core:1.5.0")
+        force("androidx.camera:camera-lifecycle:1.5.0")
+        force("androidx.camera:camera-camera2:1.5.0")
+    }
+}
